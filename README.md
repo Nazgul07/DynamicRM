@@ -9,6 +9,16 @@ It's super easy to use. Just create a DynamicSqlConnection like this:
 DynamicSqlConnection connection = new DynamicSqlConnection(new SqlConnection("<your connection string>"));
 ```
 
+Query for a record:
+```C#
+dynamic entity = connection.QuerySingle("SELECT * FROM CUSTOMERS");
+```
+
+Query for multiple records:
+```C#
+IEnumerable<dynamic> entities = connection.Query("SELECT * FROM CUSTOMERS");
+```
+
 Insert a record into the database like this:
 ```C#
 dynamic entity = new Entity("Customers");
