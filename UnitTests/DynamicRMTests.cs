@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 namespace UnitTests
 {
 	[TestClass]
-	public class DynamicRMContextTests
+	public class DynamicRMTests
 	{
 		[TestMethod]
 		public void TestCrudMethods()
