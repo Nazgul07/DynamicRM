@@ -1,7 +1,7 @@
 # DynamicRM
 DynamicRM is a lightwieght Dynamic Object Relational Mapper for .Net written in C#.
 
-It uses non-traditional Entity objects that inherit from DynamicObject. This enables setting column values on Enitty objects at will.
+It uses non-traditional Entity objects that inherit from DynamicObject. This enables setting column values on Entity objects at will.
 
 It's super easy to use. Just create a DynamicSqlConnection like this:
 
