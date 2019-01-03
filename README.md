@@ -56,24 +56,24 @@ NOTE: There is a downside, in that intellisense will not work with the DynamicRM
 Alternatively, you can subclass Entity and define your properties to get intellisense:
 ```C#
 public class Customer : Entity
+{
+	public Customer() : base("Customers")
 	{
-		public Customer() : base("Customers")
-		{
-		}
+	}
 
-		public string FirstName
+	public string FirstName
+	{
+		get
 		{
-			get
-			{
-				TryGetProperty(nameof(FirstName), out object result);
-				return result as string;
-			}
-			set
-			{
-				SetProperty(nameof(FirstName), value);
-			}
+			TryGetProperty(nameof(FirstName), out object result);
+			return result as string;
+		}
+		set
+		{
+			SetProperty(nameof(FirstName), value);
 		}
 	}
+}
 ```
 
 You can then use the Generic Query methods as well:
