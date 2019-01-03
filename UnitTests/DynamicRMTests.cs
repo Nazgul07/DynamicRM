@@ -40,15 +40,13 @@ namespace UnitTests
 
 			//make sure it got inserted by querying
 			entity = context.QuerySingle<Customer>("SELECT * FROM CUSTOMERS");
-			entity.EntityTableName = "Customers";
 			entity.FirstName = "Doe";
 			context.Update(entity);
 
 			//query again to ensure it updated
 			entity = context.QuerySingle<Customer>("SELECT * FROM CUSTOMERS");
 			Assert.AreEqual(entity.FirstName, "Doe");
-
-			entity.EntityTableName = "Customers";
+			
 			context.Delete(entity);
 		}
 	}
