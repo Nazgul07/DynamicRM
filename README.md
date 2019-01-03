@@ -52,3 +52,33 @@ connection.Update(entity);
 DynamicSqlConnection also provides the basic Command methods that SqlConnection does, like ExecuteNonQuery/ExecuteReader/ExecuteScalar.
 
 NOTE: There is a downside, in that intellisense will not work with the DynamicRM Entity objects. This is a trade off for speed of development.
+
+Alternatively, you can subclass Entity and define your properties to get intellisense:
+```C#
+public class Customer : Entity
+	{
+		public Customer() : base("Customers")
+		{
+		}
+
+		public string FirstName
+		{
+			get
+			{
+				TryGetProperty(nameof(FirstName), out object result);
+				return result as string;
+			}
+			set
+			{
+				SetProperty(nameof(FirstName), value);
+			}
+		}
+	}
+```
+
+You can then use the Generic Query methods as well:
+```C#
+Customer entity = context.QuerySingle<Customer>("SELECT * FROM CUSTOMERS");
+entity.FirstName = "Doe";
+context.Update(entity);
+```
