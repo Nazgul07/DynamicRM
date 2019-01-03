@@ -9,9 +9,12 @@ namespace DynamicRM
 		public string EntityTableName { get;  set; }
 
 		internal Dictionary<string, object> _originalProperties = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-		private Dictionary<string, object> _dynamicProperties = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase); 
+		private Dictionary<string, object> _dynamicProperties = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-
+	    public Entity()
+	    {
+		    EntityTableName = "QueryResult";
+	    }
 		public Entity(string entityName)
 		{
 			EntityTableName = entityName;

@@ -129,6 +129,7 @@ namespace DynamicRM
 			object original;
 			return entity.TryGetProperty(column, out result) && !props.AutoIncrementingKeys.Contains(column) 
 				&& (!entity._originalProperties.TryGetValue(column, out original)  || result != original);
+
 		}
 
 		private static bool ShouldIncludeColumnForInsert(Entity entity, EntityProperties props, string column)

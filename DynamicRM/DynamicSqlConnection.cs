@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace DynamicRM
 {
-	public class DynamicSqlConnection: IDbConnection
+	public class DynamicSqlConnection : IDisposable
 	{
 		private SqlConnection _connection;
 		private Dictionary<string, EntityProperties> _entities = new Dictionary<string, EntityProperties>(StringComparer.OrdinalIgnoreCase);
@@ -63,6 +63,11 @@ namespace DynamicRM
 
 		public IEnumerable<dynamic> Query(string sqlQuery)
 		{
+			return Query<Entity>(sqlQuery);
+		}
+
+		public IEnumerable<T> Query<T>(string sqlQuery) where T : Entity, new()
+		{
 			SqlCommand cmd = new SqlCommand();
 			cmd.Connection = _connection;
 			cmd.CommandText = sqlQuery;
@@ -91,6 +96,11 @@ namespace DynamicRM
 
 		public dynamic QuerySingle(string sqlQuery)
 		{
+			return QuerySingle<Entity>(sqlQuery);
+		}
+
+		public dynamic QuerySingle<T>(string sqlQuery) where T:  Entity, new()
+		{
 			SqlCommand cmd = new SqlCommand();
 			cmd.Connection = _connection;
 			cmd.CommandText = sqlQuery;
@@ -99,7 +109,7 @@ namespace DynamicRM
 			{
 				while (reader.Read())
 				{
-					dynamic row = new Entity("QueryResult");
+					dynamic row = new T();
 					for (int i = 0; i < reader.FieldCount; i++)
 					{
 						string column = reader.GetName(i);
@@ -113,6 +123,7 @@ namespace DynamicRM
 			}
 			return result;
 		}
+		
 
 		public void Insert(params Entity[] entities)
 		{
@@ -223,44 +234,6 @@ namespace DynamicRM
 		}
 
 		public IEnumerable<string> TableNames { get { return _entities.Keys; } }
-
-		#region IDbConnection Properties
-		public string ConnectionString
-		{
-			get
-			{
-				return _connection.ConnectionString;
-			}
-
-			set
-			{
-				_connection.ConnectionString = value;
-			}
-		}
-
-		public int ConnectionTimeout
-		{
-			get
-			{
-				return _connection.ConnectionTimeout;
-			}
-		}
-
-		public string Database
-		{
-			get
-			{
-				return _connection.Database;
-			}
-		}
-
-		public ConnectionState State
-		{
-			get
-			{
-				return _connection.State;
-			}
-		}
 		
 		public void Dispose()
 		{
@@ -274,8 +247,8 @@ namespace DynamicRM
 
 			if (disposing)
 			{
-				_connection.Close();
-				_connection.Dispose();
+				_connection?.Close();
+				_connection?.Dispose();
 			}
 		}
 
@@ -288,26 +261,11 @@ namespace DynamicRM
 		{
 			return _connection.BeginTransaction(il);
 		}
-
-		public void Close()
-		{
-			_connection.Close();
-		}
-
-		public void ChangeDatabase(string databaseName)
-		{
-			_connection.ChangeDatabase(databaseName);
-		}
-
+		
 		public IDbCommand CreateCommand()
 		{
 			return _connection.CreateCommand();
 		}
-
-		public void Open()
-		{
-			_connection.Open();
-		}
-		#endregion
+		
 	}
 }
